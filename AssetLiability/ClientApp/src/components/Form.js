@@ -18,7 +18,7 @@ export default class Form extends React.Component {
     }
 
     handleSubmit(event) {
-        fetch('api/BalanceSheets/', {
+        fetch('api/balancesheet', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

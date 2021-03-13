@@ -10,13 +10,13 @@ using AssetLiability.Models;
 
 namespace AssetLiability.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/balancesheet")]
     [ApiController]
-    public class BalanceSheetsController : ControllerBase
+    public class BalanceSheetController : ControllerBase
     {
         private readonly AssetLiabilityContext _context;
 
-        public BalanceSheetsController(AssetLiabilityContext context)
+        public BalanceSheetController(AssetLiabilityContext context)
         {
             _context = context;
         }
@@ -25,11 +25,11 @@ namespace AssetLiability.Controllers
         [HttpGet]
         public IEnumerable<BalanceSheet> GetBalanceSheet()
         {
-            IEnumerable<BalanceSheet> balanceSheet =  _context.BalanceSheet;
-            return balanceSheet;
+            IEnumerable<BalanceSheet> balanceSheetList =  _context.BalanceSheet;
+            return balanceSheetList;
         }
 
-        // GET: api/BalanceSheets/5
+        // GET: api/balancesheet/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBalanceSheet([FromRoute] int id)
         {
@@ -48,7 +48,7 @@ namespace AssetLiability.Controllers
             return Ok(balanceSheet);
         }
 
-        // PUT: api/BalanceSheets/5
+        // PUT: api/balancesheet/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBalanceSheet([FromRoute] int id, [FromBody] BalanceSheet balanceSheet)
         {
@@ -83,7 +83,7 @@ namespace AssetLiability.Controllers
             return NoContent();
         }
 
-        // POST: api/BalanceSheets
+        // POST: api/balancesheet
         [HttpPost]
         public async Task<IActionResult> PostBalanceSheet([FromBody] BalanceSheet balanceSheet)
         {
