@@ -5,16 +5,24 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons'
 export default class Table extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { balanceSheetList: [], loading: true };
+        this.state = {
+            balanceSheet: {records: []}, loading: true };
 
+        this.updateBalanceSheet();
+    }
+
+    updateBalanceSheet() {
         fetch('api/balancesheet')
             .then(response => response.json())
             .then(data => {
-                this.setState({ balanceSheetList: data, loading: false });
+                if (data.records == null) {
+                    data = {
+                        records: []
+                    }
+                }
+                this.setState({ balanceSheet: data, loading: false });
             });
-
     }
-
     /**
      * 
      * Delete balancesheet record and reset the state
@@ -24,15 +32,20 @@ export default class Table extends React.Component {
      */
     deleteRecord(record) {
         if (window.confirm("Are you sure you want to delete this record from your balance sheet?")) {
-            fetch('api/balancesheet/' + record.balanceSheetID, {
+            fetch('api/records/' + record.recordId, {
                 method: 'DELETE'
             })
-            let filteredArray = this.state.balanceSheetList.filter(balanceSheet => balanceSheet.balanceSheetID !== record.balanceSheetID)
-            this.setState({ balanceSheetList: filteredArray });
+            this.updateBalanceSheet();
         }
     }
 
-    renderBalanceSheetTable(balanceSheetList) {
+    renderBalanceSheetTable(balanceSheet) {
+        let assets = {
+            color: '#85bb65'
+        }
+        let liabilities = {
+            color: '#E84855'
+        }
         return (
             <table className='table'>
                 <thead>
@@ -43,15 +56,32 @@ export default class Table extends React.Component {
                     </tr>
                 </thead> 
                 <tbody>
-                    {balanceSheetList.map(balanceSheet =>
-                        <tr key={balanceSheet.balanceSheetID}>
-                            <td>{balanceSheet.type}</td>
-                            <td>{balanceSheet.name}</td>
-                            <td>{balanceSheet.balance}</td>
-                            <td><FontAwesomeIcon icon={faTrash} onClick={() => this.deleteRecord(balanceSheet)} /></td>
+                    {balanceSheet.records.map(record =>
+                        <tr key={record.balanceSheetID}>
+                            <td>{record.type}</td>
+                            <td>{record.name}</td>
+                            <td>{record.balance}</td>
+                            <td><FontAwesomeIcon icon={faTrash} onClick={() => this.deleteRecord(record)} /></td>
                         </tr>
                     )}
                 </tbody>
+                <tfoot>
+                    <tr style={assets}>
+                        <th scope="row">Total Assets</th>
+                        <td></td>
+                        <td>{balanceSheet.assetsTotal}</td>
+                    </tr>
+                    <tr style={liabilities}>
+                        <th scope="row">Total Liabilities</th>
+                        <td></td>
+                        <td>{balanceSheet.liabilitiesTotal}</td>
+                    </tr>
+                    <tr style={balanceSheet.assetsTotal >= balanceSheet.liabilitiesTotal ? assets : liabilities}>
+                        <th scope="row">Net Worth</th>
+                        <td></td>
+                        <td>{balanceSheet.netWorth}</td>
+                    </tr>
+                </tfoot>
             </table>
         );
     }
@@ -59,7 +89,7 @@ export default class Table extends React.Component {
     render() {
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : this.renderBalanceSheetTable(this.state.balanceSheetList);
+            : this.renderBalanceSheetTable(this.state.balanceSheet);
 
         return (
             <div>

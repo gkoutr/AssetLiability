@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using AssetLiability.Models;
+using AssetLiability.Data;
 
 namespace AssetLiability
 {

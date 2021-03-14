@@ -3,7 +3,7 @@
 export default class Form extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { type: '', name: '', balance: ''};
+        this.state = { type: 'Asset', name: '', balance: ''};
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -18,7 +18,7 @@ export default class Form extends React.Component {
     }
 
     handleSubmit(event) {
-        fetch('api/balancesheet', {
+        fetch('api/records', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -31,23 +31,31 @@ export default class Form extends React.Component {
             })
         })
         event.preventDefault();
+        window.location.reload();
     }
 
     render() {
+        var style = {
+            padding: '20px'
+        };
+
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Type:
-          <input type="text" name="type" value={this.state.type} onChange={this.handleChange} />
-                </label>
-                <label>
-                    Name:
-                    <input type="text" name="name" value={this.state.name} onChange={this.handleChange} />
-                </label>
-                <label>
-                    Balance:
-                    <input type="text" name="balance" value={this.state.balance} onChange={this.handleChange} />
-                </label>
+            <form style={style} onSubmit={this.handleSubmit}>
+                <div className="form-group">
+                    <label htmlFor="typeFormSelect">Type:</label>
+                    <select className="form-control" id="typeFormSelect" name="type" value={this.state.type} onChange={this.handleChange} >
+                        <option selected key="1" value="Asset">Asset</option>
+                        <option key="2" value="Liability">Liability</option>
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="typeFormInput">Name:</label>
+                    <input id="typeFormInput" className="form-control" type="text" name="name" value={this.state.name} onChange={this.handleChange} />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="balanceFormInput">Balance:</label>
+                    <input id="balanceFormInput" className="form-control" type="text" name="balance" value={this.state.balance} onChange={this.handleChange} />
+                </div>
                 <input type="submit" value="Submit" />
             </form>
         );

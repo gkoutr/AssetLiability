@@ -4,8 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AssetLiability;
+using AssetLiability.Models;
 
-namespace AssetLiability.Models
+namespace AssetLiability.Data
 {
     public class AssetLiabilityContext : DbContext
     {
@@ -14,6 +15,6 @@ namespace AssetLiability.Models
         {
         }
 
-        public DbSet<AssetLiability.BalanceSheet> BalanceSheet { get; set; }
+        public DbSet<Record> Record { get; set; }
     }
 }
