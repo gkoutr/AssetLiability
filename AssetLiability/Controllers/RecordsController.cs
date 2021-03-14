@@ -64,14 +64,14 @@ namespace AssetLiability.Controllers
 
         // DELETE: api/records/1
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRecord([FromRoute] int recordId)
+        public async Task<IActionResult> DeleteRecord([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var record = await _context.Record.FindAsync(recordId);
+            var record = await _context.Record.FindAsync(id);
             if (record == null)
             {
                 return NotFound();

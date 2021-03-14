@@ -6,7 +6,8 @@ export default class Table extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            balanceSheet: {records: []}, loading: true };
+            balanceSheet: { records: [] }, loading: true
+        };
 
         this.updateBalanceSheet();
     }
@@ -23,6 +24,7 @@ export default class Table extends React.Component {
                 this.setState({ balanceSheet: data, loading: false });
             });
     }
+
     /**
      * 
      * Delete balancesheet record and reset the state
@@ -34,11 +36,18 @@ export default class Table extends React.Component {
         if (window.confirm("Are you sure you want to delete this record from your balance sheet?")) {
             fetch('api/records/' + record.recordId, {
                 method: 'DELETE'
-            })
-            this.updateBalanceSheet();
+            }).then(() => {
+                this.updateBalanceSheet()
+            });
         }
     }
 
+    /**
+     * 
+     * Renders table after pulling balancesheet data from api
+     * 
+     * @param {any} balanceSheet
+     */
     renderBalanceSheetTable(balanceSheet) {
         let assets = {
             color: '#85bb65'
